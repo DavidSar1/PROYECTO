@@ -15,7 +15,25 @@ using namespace std;
 
 class clase_calculos{
 	float met_calcularPorcentajeporPregunta(float saldo){
-		
+		//aqui se calcula el saldo obtenido por cada respuesta y se envia a una variable
+		float saldo2 = (saldo*10)/100;
+		return saldo2;
+	}
+
+	float met_calcularPorcentajeRetirarse(float saldo, int lvl){
+		//aqui se calcula el saldo obtenido por retirarse del juego y se envia a una variable
+		float saldo2 = 0;
+		if (lvl==3){
+			float saldo2 = (saldo*25)/100;
+		}
+		if (lvl==6){
+			float saldo2 = (saldo*50)/100;
+		}
+		if(lvl==9){
+			float saldo2 = (saldo*75)/100;
+		}
+		return saldo2;
+
 	}
 };
 

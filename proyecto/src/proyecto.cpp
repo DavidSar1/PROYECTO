@@ -9,10 +9,6 @@
 #include <iostream>
 using namespace std;
 
-#include <iostream>
-using namespace std;
-
-
 class clase_calculos{
 	float met_calcularPorcentajeporPregunta(float saldo){
 		//aqui se calcula el saldo obtenido por cada respuesta y se envia a una variable

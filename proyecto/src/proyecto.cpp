@@ -9,6 +9,18 @@
 #include <iostream>
 using namespace std;
 
+class clase_perfilJugador{
+public:
+	float atr_saldo=0;
+
+	float met_ingresarsaldo(){
+		//con este metodo le pedimos al usuario el dinero que desea ingresar al juego
+		cout<<"Cuanto dinero desea ingresar?";
+		cin<<atr_saldo;
+		return atr_saldo;
+	}
+};
+
 class clase_calculos{
 	float met_calcularPorcentajeporPregunta(float saldo){
 		//aqui se calcula el saldo obtenido por cada respuesta y se envia a una variable

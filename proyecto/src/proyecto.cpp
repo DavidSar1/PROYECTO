@@ -19,7 +19,15 @@ public:
 		cin<<atr_saldo;
 		return atr_saldo;
 	}
+	float met_retirarsaldo(){
+		float saldoRetirado = 0;
+		cout<<"Cuanto dinero desea sacar?";
+		cin<<saldoRetirado;
+		return atr_saldo-saldoRetirado;
+	}
 };
+
+
 
 class clase_calculos{
 	float met_calcularPorcentajeporPregunta(float saldo){

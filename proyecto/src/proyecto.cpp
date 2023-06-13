@@ -15,15 +15,19 @@ public:
 
 	float met_ingresarsaldo(){
 		//con este metodo le pedimos al usuario el dinero que desea ingresar al juego
-		cout<<"Cuanto dinero desea ingresar?";
+		cout<<"Cuanto dinero desea ingresar?"<<endl;
 		cin<<atr_saldo;
 		return atr_saldo;
 	}
 	float met_retirarsaldo(){
 		float saldoRetirado = 0;
-		cout<<"Cuanto dinero desea sacar?";
+		cout<<"Cuanto dinero desea sacar?";<<endl;
 		cin<<saldoRetirado;
 		return atr_saldo-saldoRetirado;
+	}
+	void met_revisarSaldo(){
+		cout<<"Saldo disponible"<<endl;
+		cout<<atr_saldo<<<<endl;
 	}
 };
 

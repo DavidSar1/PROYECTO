@@ -36,6 +36,32 @@ public:
 	}
 }
 
+class clase_login{
+public:
+	string atr_usuario;
+	string atr_contraseña;
+	string atr_usuarios[][];
+
+	void met_crear_jugador(){
+		cout<<"Ingrese su nombre de usuario"<<endl;
+		cin>>atr_usuario;
+		cout<<"Ingrese contraseña"<<endl;
+		cin>>atr_contraseña;
+
+		//Validacion
+
+		//Validacion
+
+		for(int i=0;i<10;i++){
+			for(int j=0;j<10;j++){
+				atr_usuario = atr_usuarios[i][j];
+				atr_contraseña = atr_usuarios[i][j];
+			}
+		}
+	}
+};
+
+
 class clase_perfilJugador{
 public:
 	float atr_saldo=0;

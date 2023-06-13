@@ -63,15 +63,14 @@ public:
 		cout<<"		0-Cerrar el juego"<<endl;
 		cout<<"------------------------------------"<<endl;
 	}
-	void met_menuPreguntas(string pregunta,string res1, string res2,string res3,string res4, int nlv){
+	void met_menuPreguntas(string matrizPreguntas[[, int nlv, int num){
 		cout<<"---------Nivel ("<<nlv<<"----------"<<endl;
-		cout<<"¿¿"<<pregunta<<"??"<<endl;
-		cout<<"1-"<<res1<<endl;
-		cout<<"2-"<<res2<<endl;
-		cout<<"3-"<<res3<<endl;
-		cout<<"4-"<<res4<<endl;
+		cout<<"¿¿"<<matrizPregunta[num[0<<"??"<<endl;
+		cout<<"1-"<<matrizPregunta[num[1<<endl;
+		cout<<"2-"<<matrizPregunta[num[2<<endl;
+		cout<<"3-"<<matrizPregunta[num[2<<endl;
+		cout<<"4-"<<matrizPregunta[num[2<endl;
 	}
-};
 
 int main() {
 	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!

@@ -85,7 +85,7 @@ public:
 	float met_retirarsaldo(){
 		//creamos una variable que guardara el saldo a retirar
 		float saldoRetirado = 0;
-		cout<<"Cuanto dinero desea sacar?";<<endl;
+		cout<<"Cuanto dinero desea sacar?"<<endl;
 		//ingresamos el saldo para retirar
 		cin<<saldoRetirado;
 		return atr_saldo-saldoRetirado; //restamos el valor ingresado al saldo original

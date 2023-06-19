@@ -28,7 +28,7 @@ public:
 		cout<<"------------------------------------"<<endl;
 	}
 	//este es el unico que recibe una matriz y 2 variables, para definir la pregunta
-	void met_menuPreguntas(string matrizPreguntas[[, int nlv, int num){
+	void met_menuPreguntas(string matrizPreguntas[], int nlv, int num){
 		cout<<"---------Nivel ("<<nlv<<"----------"<<endl;
 		cout<<"¿¿"<<matrizPregunta[num][0]<<"??"<<endl;
 		cout<<"1-"<<matrizPregunta[num][1]<<endl;

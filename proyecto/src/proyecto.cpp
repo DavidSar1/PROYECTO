@@ -2,99 +2,8 @@
 #include <ctime>
 #include <string>
 #include <iostream>
+#include <vector>
 using namespace std;
-//En clase solo sirve para guardar metodos vacios que guardan solo
-//string para mostrar los menus de forma ordenada
-class clase_menus{
-public:
-	void met_menuInicial(){
-		cout<<"----------Think And Win-------------"<<endl;
-		cout<<"		1-Comenzar Juego"<<endl;
-		cout<<"		2-Recargar saldo"<<endl;
-		cout<<"		4-Retirar saldo"<<endl;
-		cout<<"		0-Cerrar seccion"<<endl;
-		cout<<"------------------------------------"<<endl;
-	}
-	void met_menuIngreso(){
-		cout<<"---------Opciones de inicio---------"<<endl;
-		cout<<"		1-Iniciar seccion"<<endl;
-		cout<<"		2-Registrar nuevo jugador"<<endl;
-		cout<<"		0-Cerrar el juego"<<endl;
-		cout<<"------------------------------------"<<endl;
-	}
-	//este es el unico que recibe una matriz y 2 variables, para definir la pregunta
-	void met_menuPreguntas(string matrizPreguntas[], int nlv, int num){
-		cout<<"---------Nivel ("<<nlv<<"----------"<<endl;
-		cout<<"¿¿"<<matrizPreguntas[num][0]<<"??"<<endl;
-		cout<<"1-"<<matrizPreguntas[num][1]<<endl;
-		cout<<"2-"<<matrizPreguntas[num][2]<<endl;
-		cout<<"3-"<<matrizPreguntas[num][3]<<endl;
-		cout<<"4-"<<matrizPreguntas[num][4]<<endl;
-	};
-
-};
-
-
-
-
-//en la clase login, se ingresa aL juego y se registran nuevos usarios
-class clase_login{
-public:
-	//atributo que guarda temporalmente el usuario
-	string atr_usuario;
-	//atributo que guarda temporalmente la contraseña
-	string atr_contraseña;
-	//matroz que solo tiene 2 columnas, donde una se le asignan los usuarios y la otra a las contraseñas
-	string atr_usuarios[][];
-
-	//con este metodo creamos nuevos jugadores en el sisteam, asignando un usuario y una contraseña
-	void met_crear_jugador(){
-		cout<<"Ingrese su nombre de usuario"<<endl;
-		cin>>atr_usuario;
-		cout<<"Ingrese contraseña"<<endl;
-		cin>>atr_contraseña;
-
-		//Validacion
-
-		//Validacion
-
-		for(int i=0;i<10;i++){
-			for(int j=0;j<10;j++){
-				atr_usuario = atr_usuarios[i][j];
-				atr_contraseña = atr_usuarios[i][j];
-			}
-		}
-	}
-};
-
-
-class clase_perfilJugador{
-public:
-	float atr_saldo=0;
-
-	float met_ingresarsaldo(){
-		//con este metodo le pedimos al usuario el dinero que desea ingresar al juego
-		cout<<"Cuanto dinero desea ingresar?"<<endl;
-		cin<<atr_saldo;
-		return atr_saldo;
-	}
-	float met_retirarsaldo(){
-		//creamos una variable que guardara el saldo a retirar
-		float saldoRetirado = 0;
-		cout<<"Cuanto dinero desea sacar?"<<endl;
-		//ingresamos el saldo para retirar
-		cin<<saldoRetirado;
-		return atr_saldo-saldoRetirado; //restamos el valor ingresado al saldo original
-	}
-	//mostramos el saldo por pantalla
-	void met_revisarSaldo(){
-		cout<<"Saldo disponible"<<endl;
-		cout<<atr_saldo<<endl;
-	}
-};
-
-
-
 class clase_calculos{
 	float met_calcularPorcentajeporPregunta(float saldo){
 		//aqui se calcula el saldo obtenido por cada respuesta y se envia a una variable
@@ -118,6 +27,216 @@ class clase_calculos{
 
 	}
 };
+
+//-------------------------------------------------------------------------------------------
+
+class clase_validaciones{
+public:
+	//---------------------------------------------------------------------------------
+	// aqui validamos las opciones que puede digitar el usuario dentro del menu de ingreso
+	//siendo este ente 0 y 2, para evitar que el usuario digite otros comandos
+	bool met_validarOpcionMenuingreso(int val_opcionIngreso)
+	{
+		if(val_opcionIngreso>=0 and val_opcionIngreso<=2)
+		{
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+	//---------------------------------------------------------------------------------
+
+
+	//---------------------------------------------------------------------------------
+	//Aqui validamos las opciones detro del menu principal, que tiene un rango de 0 a 4
+	bool met_validarOpcionMenuPrincipal(int val_opcionMenuPrincipal)
+	{
+		if(val_opcionMenuPrincipal>=0 and val_opcionMenuPrincipal<=4)
+		{
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	//---------------------------------------------------------------------------------
+
+	//---------------------------------------------------------------------------------
+	//Aqui validamos las opciones detro del menu de las preguntas, que tiene un rango de 0 a 4
+	bool met_validarOpcionPregunta(int val_opcionPregunta)
+	{
+		if(val_opcionPregunta>=0 and val_opcionPregunta<=4)
+		{
+			return true;
+		} else {
+			return false;
+		}
+	}
+	//---------------------------------------------------------------------------------
+
+	//---------------------------------------------------------------------------------
+	//evalua la pregunta dada por el usuario y la resputa guardad en la matriz, retornando un booleano
+	bool met_validarRespuesPregunta(int val_OpcionPregunta, int val_PreguntaMatriz)
+	{
+		if(val_OpcionPregunta == val_PreguntaMatriz)
+		{
+			return true;
+		} else {
+			return false;
+		}
+	}
+	//---------------------------------------------------------------------------------
+
+
+	//---------------------------------------------------------------------------------
+	//
+	bool met_validarUsuarioExistente(string val_usuario, string val_VectorUsuarios[], int tamaño_matriz){
+		for(int i = 0; i = tamaño_matriz; i++)
+		{
+			if(val_usuario == val_VectorUsuarios[i])
+			{
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
+	//---------------------------------------------------------------------------------
+
+};
+
+
+
+
+//En clase solo sirve para guardar metodos vacios que guardan solo
+//string para mostrar los menus de forma ordenada
+class clase_menus{
+public:
+	void met_menuInicial(){
+		cout<<"----------Think And Win-------------"<<endl;
+		cout<<"		1-Comenzar Juego"<<endl;
+		cout<<"		2-Recargar saldo"<<endl;
+		cout<<"		4-Retirar saldo"<<endl;
+		cout<<"		0-Cerrar seccion"<<endl;
+		cout<<"------------------------------------"<<endl;
+	}
+	void met_menuIngreso(){
+		cout<<"---------Opciones de inicio---------"<<endl;
+		cout<<"		1-Iniciar seccion"<<endl;
+		cout<<"		2-Registrar nuevo jugador"<<endl;
+		cout<<"		0-Cerrar el juego"<<endl;
+		cout<<"------------------------------------"<<endl;
+	}
+
+};
+
+
+
+
+
+//en la clase login, se ingresa aL juego y se registran nuevos usarios
+class clase_login{
+public:
+	//atributo que guarda temporalmente el usuario
+	vector<string> atr_usuarios;
+	//atributo que guarda temporalmente la contraseña
+	vector<string> atr_contraseñas;
+	//
+	string atr_user;
+	strign atr_pass;
+
+
+	//---------------------------------------------------------------------------------
+	//con este metodo creamos nuevos jugadores en el sisteam, asignando un usuario y una contraseña
+	void met_crear_jugador()
+	{
+		cout<<"Ingrese su nombre de usuario"<<endl;
+		cin>>atr_user;
+		cout<<"Ingrese contraseña"<<endl;
+		cin>>atr_pass;
+		//Validacion
+		clase_validaciones obj_val;
+		int val_tamanoMatriz = atr_usuarios.size();
+		bool val_usuario_nombre = obj_val.met_validarUsuarioExistente(atr_usuarios, atr_usuarios, val_tamanoMatriz);
+		if (val_usuario_nombre == true)
+		{
+			atr_usuarios.push_back(atr_user);
+			atr_contraseñas.push_back(atr_pass);
+		} else
+		{
+			cout<<"Este nombre de usuario ya existe, intentalo de nuevo!!"<<endl;
+			met_crear_jugador();
+		}
+		//Validacion
+	}
+	//---------------------------------------------------------------------------------
+
+
+
+
+	//---------------------------------------------------------------------------------
+	//metodo para iniciar la seccion
+	bool met_iniciar_seccion()
+	{
+		bool val_ingresar = false;
+		cout<<"Ingrese su nombre de usuario"<<endl;
+		cin>>atr_user;
+		cout<<"Ingrese contraseña"<<endl;
+		cin>>atr_pass;
+		//---------------------------------------------------------------------------------
+		for (int i = 0; i < atr_usuarios.size(); i++)
+		        {
+		            if (atr_usuarios[i] == atr_user && atr_contraseñas[i] == atr_pass)
+		            {
+		            	val_ingresar = true;
+		                break;
+		            }
+		        }
+		//---------------------------------------------------------------------------------
+
+	}
+	//---------------------------------------------------------------------------------
+};
+
+
+
+class clase_perfilJugador{
+public:
+	float atr_saldo=0;
+	//---------------------------------------------------------------------------------
+	float met_ingresarsaldo(){
+		//con este metodo le pedimos al usuario el dinero que desea ingresar al juego
+		cout<<"Cuanto dinero desea ingresar?"<<endl;
+		cin<<atr_saldo;
+		return atr_saldo;
+	}
+	//---------------------------------------------------------------------------------
+
+
+	//---------------------------------------------------------------------------------
+	float met_retirarsaldo(){
+		//creamos una variable que guardara el saldo a retirar
+		float saldoRetirado = 0;
+		cout<<"Cuanto dinero desea sacar?"<<endl;
+		//ingresamos el saldo para retirar
+		cin<<saldoRetirado;
+		return atr_saldo-saldoRetirado; //restamos el valor ingresado al saldo original
+	}
+	//---------------------------------------------------------------------------------
+
+
+	//---------------------------------------------------------------------------------
+	//mostramos el saldo por pantalla
+	void met_revisarSaldo(){
+		cout<<"Saldo disponible"<<endl;
+		cout<<atr_saldo<<endl;
+	}
+	//---------------------------------------------------------------------------------
+};
+
+
+
 
 class clase_preguntas{
 public:

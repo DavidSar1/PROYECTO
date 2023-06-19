@@ -103,7 +103,27 @@ public:
 		}
 	}
 	//---------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------
+	bool met_validarSaldoIngresado(int val_saldoIngresado)
+	{
+		if(val_saldoIngresado>0){
+			return true;
+		} else {
+			return false;
+		}
+	}
 
+	bool met_validarSaldoParapartida(int val_saldoParaPartida)
+	{
+		if(val_saldoParaPartida>=10000){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
+	
 };
 
 

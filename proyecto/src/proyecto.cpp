@@ -122,6 +122,13 @@ public:
 		}
 	}
 
+	bool met_validarRetirarSaldo(int val_saldoretirar, int saldo_delUsuario){
+		if(val_saldoretirar>saldo_delUsuario){
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	
 };

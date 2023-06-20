@@ -429,6 +429,30 @@ public:
 
         return vector_nivel[6];
 	};
+
+	float met_retirarseDelJuego(int nivel, float saldo)
+	{
+		clase_calculos obj_cal;
+		int val_saldoFinal = 0;
+		int opc = 0;
+		cout<<"Deseas retirarte del juegl en el nivel "<<nivel<<" de tu partida actual?"<<endl;
+		cout<<"Si-1  No-Cualquier tecla"<<endl;
+		cin>>opc;
+		//--------------------------------------------------------------------------	
+		switch(opc)
+		{
+		case 1: 
+			val_saldoFinal = obj_cal.met_calcularPorcentajeRetirarse(saldo, nivel);
+			return val_saldoFinal;
+			break;
+		} default {
+			continue;
+			break;
+		}
+		
+		//--------------------------------------------------------------------------
+		
+	}
 };
 
 class clase_juego{

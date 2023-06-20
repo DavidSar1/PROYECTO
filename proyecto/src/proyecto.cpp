@@ -5,6 +5,7 @@
 #include <vector>
 using namespace std;
 class clase_calculos{
+public:
 	float met_calcularPorcentajeporPregunta(float saldo){
 		//aqui se calcula el saldo obtenido por cada respuesta y se envia a una variable
 		float saldo2 = (saldo*10)/100;
@@ -313,7 +314,30 @@ public:
 
 
 
-	string met_seleccionar_vector(int nivel_juego){
+	float met_retirarseDelJuego(int nivel, float saldo)
+	{
+		clase_calculos obj_cal;
+		int val_saldoFinal = 0;
+		int opc = 0;
+		cout<<"Deseas retirarte del juegl en el nivel "<<nivel<<" de tu partida actual?"<<endl;
+		cout<<"Si-1  No-Cualquier tecla"<<endl;
+		cin>>opc;
+		//--------------------------------------------------------------------------
+		switch(opc)
+		{
+		case 1:
+			val_saldoFinal = obj_cal.met_calcularPorcentajeRetirarse(saldo, nivel);
+			break;
+
+		default:
+			break;
+
+		}
+		return val_saldoFinal;
+
+	}
+
+	int met_seleccionar_vector(int nivel_juego){
 		srand(time(0)); // Inicializar la semilla de generación de números aleatorios
 		int columna_aleatoria = rand() % 4 + 1; // Generar un número aleatorio del 1 al 4
 		string var_pregunta;
@@ -415,52 +439,35 @@ public:
 			break;
 		};
 
-		string vector_nivel[6];
+		string vector_nivel[5];
 		vector_nivel[0]= var_pregunta;
 		vector_nivel[1]=var_opcion1;
 		vector_nivel[2]=var_opcion2;
 		vector_nivel[3]=var_opcion3;
 		vector_nivel[4]= var_opcion4;
-		vector_nivel[5]=var_respuesta;
 
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 5; i++) {
 		        cout << vector_nivel[i] << std::endl;
 		    }
+		int respuesta_correcta_nivel = 0;
+		respuesta_correcta_nivel = stoi(var_respuesta);
 
-        return vector_nivel[6];
+        return respuesta_correcta_nivel;
 	};
-
-	float met_retirarseDelJuego(int nivel, float saldo)
-	{
-		clase_calculos obj_cal;
-		int val_saldoFinal = 0;
-		int opc = 0;
-		cout<<"Deseas retirarte del juegl en el nivel "<<nivel<<" de tu partida actual?"<<endl;
-		cout<<"Si-1  No-Cualquier tecla"<<endl;
-		cin>>opc;
-		//--------------------------------------------------------------------------	
-		switch(opc)
-		{
-		case 1: 
-			val_saldoFinal = obj_cal.met_calcularPorcentajeRetirarse(saldo, nivel);
-			return val_saldoFinal;
-			break;
-		} default {
-			continue;
-			break;
-		}
-		
-		//--------------------------------------------------------------------------
-		
-	}
 };
 
 class clase_juego{
 public:
-	int atr_nivel;
+	int atr_nivel = 0;
+	int respuesta_jugador;
+	string vectorjugando[6];
 	void juego(){
 		bool i = true;
 		bool j = true;
+
+		int respuesta_jugador;
+		int respuesta_correcta;
+		float saldo_usuario = 0;
 		clase_preguntas pregunta;
 		clase_perfilJugador jugador;
 		clase_login login;
@@ -476,30 +483,62 @@ public:
 			switch(opc_principal){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			case 1:
-				menus.met_menuInicial();
-				cin>>opc_inicial;
+				j = true;
 				while(j == true){
+					menus.met_menuInicial();
+					cin>>opc_inicial;
 					switch(opc_inicial){
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					case 1:
-						cout<<"usuario registrado con exito"<<endl;
-						continue;
+						atr_nivel = 1;
+
+
+						do{
+						    respuesta_correcta = pregunta.met_seleccionar_vector(atr_nivel);
+						    cin>>respuesta_jugador;
+						    if (atr_nivel == 3){
+						    	pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
+						    }
+						    if (atr_nivel == 6){
+						    	pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
+						    }
+
+						    if(atr_nivel == 9){
+						    	pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
+						    }
+						    atr_nivel = atr_nivel + 1;
+
+						}
+
+						while(atr_nivel <= 10 );
+
+
+
+
+
+						cout<<"jugando..."<<endl;
+
+						break;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					case 2:
 						cout<<"recargar saldo"<<endl;
 						continue;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					case 3:
 						cout<<"retirar saldo"<<endl;
 						continue;
+						///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					case 0:
 						j = false;
 						cout<<"sesion cerrada con exito"<<endl;
 						continue;
-
+						///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					}
 ///////////////////CIERA EL SWITCH SECUNDARIO////////////////////////////////////////////////////////////////////////////////////////////
 				};
 /////////////////////CIERRA EL WHILE SECUNDARIO//////////////////////////////////////////////////////////////////////////////////////////
 				break;
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////BREAK CASO 1///////////////////////////////////////////////////////////////////////////////////////
 			case 2:
 				cout<<"usuario registrado con exito"<<endl;
 				continue;

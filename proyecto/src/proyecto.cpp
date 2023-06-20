@@ -13,15 +13,15 @@ class clase_calculos{
 
 	float met_calcularPorcentajeRetirarse(float saldo, int nivel){
 		//aqui se calcula el saldo obtenido por retirarse del juego y se envia a una variable
-		float saldo2 = 0;
+		float saldo2 = 0.0;
 		if (nivel==3){
-			float saldo2 = (saldo*25)/100;
+			saldo2 = (saldo*25)/100;
 		}
 		if (nivel==6){
-			float saldo2 = (saldo*50)/100;
+			saldo2 = (saldo*50)/100;
 		}
 		if(nivel==9){
-			float saldo2 = (saldo*75)/100;
+			saldo2 = (saldo*75)/100;
 		}
 		return saldo2;
 
@@ -92,16 +92,17 @@ public:
 	//---------------------------------------------------------------------------------
 	//
 	bool met_validarUsuarioExistente(string val_usuario, string val_VectorUsuarios[], int tamaño_matriz){
-		for(int i = 0; i = tamaño_matriz; i++)
+		bool valida = true;
+		for(int i = 0; i < tamaño_matriz; i++)
 		{
 			if(val_usuario == val_VectorUsuarios[i])
 			{
-				return false;
-			} else {
-				return true;
+				valida = false;
+
 			}
 		}
-	}
+		return valida;
+	};
 	//---------------------------------------------------------------------------------
 	//---------------------------------------------------------------------------------
 	bool met_validarSaldoIngresado(int val_saldoIngresado)
@@ -171,7 +172,7 @@ public:
 	vector<string> atr_contraseñas;
 	//
 	string atr_user;
-	strign atr_pass;
+	string atr_pass;
 
 
 	//---------------------------------------------------------------------------------
@@ -183,20 +184,12 @@ public:
 		cout<<"Ingrese contraseña"<<endl;
 		cin>>atr_pass;
 		//Validacion
-		clase_validaciones obj_val;
-		int val_tamanoMatriz = atr_usuarios.size();
-		bool val_usuario_nombre = obj_val.met_validarUsuarioExistente(atr_usuarios, atr_usuarios, val_tamanoMatriz);
-		if (val_usuario_nombre == true)
-		{
-			atr_usuarios.push_back(atr_user);
-			atr_contraseñas.push_back(atr_pass);
-		} else
-		{
-			cout<<"Este nombre de usuario ya existe, intentalo de nuevo!!"<<endl;
-			met_crear_jugador();
-		}
+		atr_usuarios.push_back(atr_user);
+		atr_contraseñas.push_back(atr_pass);
+
+
 		//Validacion
-	}
+	};
 	//---------------------------------------------------------------------------------
 
 
@@ -220,6 +213,7 @@ public:
 		                break;
 		            }
 		        }
+		return val_ingresar;
 		//---------------------------------------------------------------------------------
 
 	}
@@ -442,7 +436,6 @@ public:
 
 
 };
-
 
 
 int main() {

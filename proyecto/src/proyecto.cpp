@@ -91,18 +91,6 @@ public:
 
 	//---------------------------------------------------------------------------------
 	//
-	bool met_validarUsuarioExistente(string val_usuario, string val_VectorUsuarios[], int tamaño_matriz){
-		bool valida = true;
-		for(int i = 0; i < tamaño_matriz; i++)
-		{
-			if(val_usuario == val_VectorUsuarios[i])
-			{
-				valida = false;
-
-			}
-		}
-		return valida;
-	};
 	//---------------------------------------------------------------------------------
 	//---------------------------------------------------------------------------------
 	bool met_validarSaldoIngresado(int val_saldoIngresado)
@@ -143,18 +131,26 @@ class clase_menus{
 public:
 	void met_menuInicial(){
 		cout<<"----------Think And Win-------------"<<endl;
-		cout<<"		1-Comenzar Juego"<<endl;
-		cout<<"		2-Recargar saldo"<<endl;
-		cout<<"		4-Retirar saldo"<<endl;
-		cout<<"		0-Cerrar seccion"<<endl;
+		cout<<"1-Comenzar Juego"<<endl;
+		cout<<"2-Recargar saldo"<<endl;
+		cout<<"3-Retirar saldo"<<endl;
+		cout<<"0-Cerrar sesión"<<endl;
 		cout<<"------------------------------------"<<endl;
 	}
 	void met_menuIngreso(){
 		cout<<"---------Opciones de inicio---------"<<endl;
-		cout<<"		1-Iniciar seccion"<<endl;
-		cout<<"		2-Registrar nuevo jugador"<<endl;
-		cout<<"		0-Cerrar el juego"<<endl;
+		cout<<"1-Iniciar seccion"<<endl;
+		cout<<"2-Registrar nuevo jugador"<<endl;
+		cout<<"0-Cerrar el juego"<<endl;
 		cout<<"------------------------------------"<<endl;
+	}
+	void met_menu_preguntas(int nivel,  string vector[6]){
+		cout<<"------------"<<nivel<<"------------"<<endl;
+		cout<<vector[0];
+		cout<<vector[1];
+		cout<<vector[2];
+		cout<<vector[3];
+		cout<<vector[4];
 	}
 
 };
@@ -169,7 +165,7 @@ public:
 	//atributo que guarda temporalmente el usuario
 	vector<string> atr_usuarios;
 	//atributo que guarda temporalmente la contraseña
-	vector<string> atr_contraseñas;
+	vector<string> atr_contrasenas;
 	//
 	string atr_user;
 	string atr_pass;
@@ -185,7 +181,7 @@ public:
 		cin>>atr_pass;
 		//Validacion
 		atr_usuarios.push_back(atr_user);
-		atr_contraseñas.push_back(atr_pass);
+		atr_contrasenas.push_back(atr_pass);
 
 
 		//Validacion
@@ -199,24 +195,26 @@ public:
 	//metodo para iniciar la seccion
 	bool met_iniciar_seccion()
 	{
-		bool val_ingresar = false;
-		cout<<"Ingrese su nombre de usuario"<<endl;
-		cin>>atr_user;
-		cout<<"Ingrese contraseña"<<endl;
-		cin>>atr_pass;
-		//---------------------------------------------------------------------------------
-		for (int i = 0; i < atr_usuarios.size(); i++)
-		        {
-		            if (atr_usuarios[i] == atr_user && atr_contraseñas[i] == atr_pass)
-		            {
-		            	val_ingresar = true;
-		                break;
-		            }
-		        }
-		return val_ingresar;
-		//---------------------------------------------------------------------------------
+	    bool val_ingresar = false;
+	    cout << "Ingrese su nombre de usuario" << endl;
+	    cin >> atr_user;
+	    cout << "Ingrese contraseña" << endl;
+	    cin >> atr_pass;
+	    int tamano = atr_usuarios.size();
 
+
+	    for (int i = 0; i < tamano; i++)
+	    {
+	        if (atr_usuarios[i] == atr_user && atr_contrasenas[i] == atr_pass)
+	        {
+	            val_ingresar = true;
+	            break;
+	        }
+	    }
+
+	    return val_ingresar;
 	}
+
 	//---------------------------------------------------------------------------------
 };
 
@@ -229,7 +227,7 @@ public:
 	float met_ingresarsaldo(){
 		//con este metodo le pedimos al usuario el dinero que desea ingresar al juego
 		cout<<"Cuanto dinero desea ingresar?"<<endl;
-		cin<<atr_saldo;
+		cin>>atr_saldo;
 		return atr_saldo;
 	}
 	//---------------------------------------------------------------------------------
@@ -241,7 +239,7 @@ public:
 		float saldoRetirado = 0;
 		cout<<"Cuanto dinero desea sacar?"<<endl;
 		//ingresamos el saldo para retirar
-		cin<<saldoRetirado;
+		cin>>saldoRetirado;
 		return atr_saldo-saldoRetirado; //restamos el valor ingresado al saldo original
 	}
 	//---------------------------------------------------------------------------------
@@ -431,14 +429,73 @@ public:
 
         return vector_nivel[6];
 	};
-
-
-
-
 };
 
+class clase_juego{
+public:
+	int atr_nivel;
+	void juego(){
+		bool i = true;
+		bool j = true;
+		clase_preguntas pregunta;
+		clase_perfilJugador jugador;
+		clase_login login;
+		clase_menus menus;
+
+		int opc_principal = 0;
+		int opc_inicial = 0;
+
+		while(i == true){
+			menus.met_menuIngreso();
+			cin>>opc_principal;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			switch(opc_principal){
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			case 1:
+				menus.met_menuInicial();
+				cin>>opc_inicial;
+				while(j == true){
+					switch(opc_inicial){
+					case 1:
+						cout<<"usuario registrado con exito"<<endl;
+						continue;
+					case 2:
+						cout<<"recargar saldo"<<endl;
+						continue;
+					case 3:
+						cout<<"retirar saldo"<<endl;
+						continue;
+					case 0:
+						j = false;
+						cout<<"sesion cerrada con exito"<<endl;
+						continue;
+
+					}
+///////////////////CIERA EL SWITCH SECUNDARIO////////////////////////////////////////////////////////////////////////////////////////////
+				};
+/////////////////////CIERRA EL WHILE SECUNDARIO//////////////////////////////////////////////////////////////////////////////////////////
+				break;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			case 2:
+				cout<<"usuario registrado con exito"<<endl;
+				continue;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			case 0:
+				i = false;
+				cout<<"el programa ha sido cerrado con exito"<<endl;
+				break;
+
+			}
+/////////////////////////CIERRA SWITCH//////////////////////////////////////////////////////////////////////////////////////
+		}
+/////////CIERRA WHILE INICIAL//////////////////////////////////////////////////////////////////////////////////////////////////////
+	};
+//////////CIERRA EL METODO/////////////////////////////////////////////////////////////////////////////////////////////////////
+};
+///////////CIERRA LA CLASE////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main() {
-	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
+	clase_juego iniciar;
+	iniciar.juego();
 	return 0;
 }

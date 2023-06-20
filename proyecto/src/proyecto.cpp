@@ -145,14 +145,7 @@ public:
 		cout<<"0-Cerrar el juego"<<endl;
 		cout<<"------------------------------------"<<endl;
 	}
-	void met_menu_preguntas(int nivel,  string vector[6]){
-		cout<<"------------"<<nivel<<"------------"<<endl;
-		cout<<vector[0];
-		cout<<vector[1];
-		cout<<vector[2];
-		cout<<vector[3];
-		cout<<vector[4];
-	}
+
 
 };
 
@@ -468,10 +461,14 @@ public:
 
 		int respuesta_jugador;
 		int respuesta_correcta;
+
 		float saldo_usuario = 10000;
 		float saldo_ganado = 0;
+		float saldo_jugado = 10000;
 
 		bool validacion_saldo_ganado = false;
+		bool validacion_respuestas = false ;
+
 		clase_preguntas pregunta;
 		clase_perfilJugador jugador;
 		clase_login login;
@@ -502,6 +499,16 @@ public:
 
 							respuesta_correcta = pregunta.met_seleccionar_vector(atr_nivel);
 						    cin>>respuesta_jugador;
+						    validacion_respuestas = valida.met_validarRespuesPregunta(respuesta_jugador, respuesta_correcta);
+						    if(validacion_respuestas == false){
+						    	atr_nivel = 11;
+						    	saldo_usuario = 0 ;
+						    	cout<<"Respuesta incorrecta!!!!!   :("<<endl;
+						    	cout<<"-"<< saldo_jugado << endl;
+						    }
+						    else{
+						    	cout<<"Respuesta correcta!!!!!     :D"<<endl;
+						    }
 
 						    if (atr_nivel == 3){
 						    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);

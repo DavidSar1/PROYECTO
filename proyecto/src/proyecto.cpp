@@ -319,8 +319,8 @@ public:
 		clase_calculos obj_cal;
 		int val_saldoFinal = 0;
 		int opc = 0;
-		cout<<"Deseas retirarte del juegl en el nivel "<<nivel<<" de tu partida actual?"<<endl;
-		cout<<"Si-1  No-Cualquier tecla"<<endl;
+		cout<<"Deseas retirarte del juego en el nivel "<<nivel<<" de tu partida actual?"<<endl;
+		cout<<"Si-1  No-Cualquier numero"<<endl;
 		cin>>opc;
 		//--------------------------------------------------------------------------
 		switch(opc)
@@ -330,6 +330,7 @@ public:
 			break;
 
 		default:
+			val_saldoFinal = 0;
 			break;
 
 		}
@@ -467,11 +468,16 @@ public:
 
 		int respuesta_jugador;
 		int respuesta_correcta;
-		float saldo_usuario = 0;
+		float saldo_usuario = 10000;
+		float saldo_ganado = 0;
+
+		bool validacion_saldo_ganado = false;
 		clase_preguntas pregunta;
 		clase_perfilJugador jugador;
 		clase_login login;
 		clase_menus menus;
+		clase_validaciones valida;
+
 
 		int opc_principal = 0;
 		int opc_inicial = 0;
@@ -492,25 +498,40 @@ public:
 					case 1:
 						atr_nivel = 1;
 
+						while(atr_nivel < 11){
 
-						do{
-						    respuesta_correcta = pregunta.met_seleccionar_vector(atr_nivel);
+							respuesta_correcta = pregunta.met_seleccionar_vector(atr_nivel);
 						    cin>>respuesta_jugador;
+
 						    if (atr_nivel == 3){
-						    	pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
+						    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
+						    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
+						    	if (validacion_saldo_ganado == true){
+						    	atr_nivel = 11;
+						    	}
+
+
 						    }
 						    if (atr_nivel == 6){
-						    	pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
-						    }
+						    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
+						    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
+						    	if (validacion_saldo_ganado == true){
+						    	atr_nivel = 11;
+						    	}
+
+						    };
 
 						    if(atr_nivel == 9){
-						    	pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
+						    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
+						    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
+						    	if (validacion_saldo_ganado == true){
+						    	atr_nivel = 11;
+						    	}
+
 						    }
 						    atr_nivel = atr_nivel + 1;
+						};
 
-						}
-
-						while(atr_nivel <= 10 );
 
 
 

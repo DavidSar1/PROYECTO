@@ -120,7 +120,7 @@ public:
 		}
 	}
 
-	
+
 };
 
 
@@ -135,6 +135,7 @@ public:
 		cout<<"1-Comenzar Juego"<<endl;
 		cout<<"2-Recargar saldo"<<endl;
 		cout<<"3-Retirar saldo"<<endl;
+		cout<<"4-Revisar saldo"<<endl;
 		cout<<"0-Cerrar sesión"<<endl;
 		cout<<"------------------------------------"<<endl;
 	}
@@ -216,34 +217,11 @@ public:
 
 class clase_perfilJugador{
 public:
-	float atr_saldo=0;
-	//---------------------------------------------------------------------------------
-	float met_ingresarsaldo(){
-		//con este metodo le pedimos al usuario el dinero que desea ingresar al juego
-		cout<<"Cuanto dinero desea ingresar?"<<endl;
-		cin>>atr_saldo;
-		return atr_saldo;
-	}
-	//---------------------------------------------------------------------------------
-
-
-	//---------------------------------------------------------------------------------
-	float met_retirarsaldo(){
-		//creamos una variable que guardara el saldo a retirar
-		float saldoRetirado = 0;
-		cout<<"Cuanto dinero desea sacar?"<<endl;
-		//ingresamos el saldo para retirar
-		cin>>saldoRetirado;
-		return atr_saldo-saldoRetirado; //restamos el valor ingresado al saldo original
-	}
-	//---------------------------------------------------------------------------------
-
-
 	//---------------------------------------------------------------------------------
 	//mostramos el saldo por pantalla
-	void met_revisarSaldo(){
+	void met_revisarSaldo(float val_saldo){
 		cout<<"Saldo disponible"<<endl;
-		cout<<atr_saldo<<endl;
+		cout<<val_saldo<<endl;
 	}
 	//---------------------------------------------------------------------------------
 };
@@ -465,9 +443,13 @@ public:
 		float saldo_usuario = 10000;
 		float saldo_ganado = 0;
 		float saldo_jugado = 10000;
+		float saldo_nuevo_ingresar = 0;
+		float saldo_para_retirar_del_juego = 0;
 
 		bool validacion_saldo_ganado = false;
 		bool validacion_respuestas = false ;
+		bool validacion_saldo_nuevo_ingresar = false;
+		bool validacion_saldo_para_retirar = false;
 
 		clase_preguntas pregunta;
 		clase_perfilJugador jugador;
@@ -475,9 +457,10 @@ public:
 		clase_menus menus;
 		clase_validaciones valida;
 
-
+		int opc_retirar_saldo = 0;
 		int opc_principal = 0;
 		int opc_inicial = 0;
+		int opc_ingresar_saldo = 0;
 
 		while(i == true){
 			menus.met_menuIngreso();
@@ -505,6 +488,7 @@ public:
 						    	saldo_usuario = 0 ;
 						    	cout<<"Respuesta incorrecta!!!!!   :("<<endl;
 						    	cout<<"-"<< saldo_jugado << endl;
+						    	saldo_jugado = 0;
 						    }
 						    else{
 						    	cout<<"Respuesta correcta!!!!!     :D"<<endl;
@@ -548,14 +532,68 @@ public:
 
 						break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////INGRESAR SALDO///////////////////////////////////////////////////////////////////////////
 					case 2:
-						cout<<"recargar saldo"<<endl;
+						cout<<"Desea ingresar saldo de su cuenta?"<<endl;
+						cout<<"Si-1 No-Cualquier otro numero"<<endl;
+						cin>>opc_ingresar_saldo;
+						switch(opc_ingresar_saldo)
+						{
+
+
+						case 1:
+							cout<<"Cuanto dinero desea ingresar?"<<endl;
+							cin>>saldo_nuevo_ingresar;
+
+							validacion_saldo_nuevo_ingresar = valida.met_validarSaldoIngresado(saldo_nuevo_ingresar);
+
+							if(validacion_saldo_nuevo_ingresar == true)
+
+							{
+								saldo_usuario = saldo_usuario+saldo_nuevo_ingresar;
+								break;
+							} else {
+								cout<<"La transferencia no se pudo realizar..."<<endl;
+								break;
+							}
+
+						}
 						continue;
+////////////////////////////////////FIN INGRESAR SALDO///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					case 3:
+						cout<<"Desea tirar saldo de su cuenta?"<<endl;
+						cout<<"Si-1 No-Cualquier otro numero"<<endl;
+						cin>>opc_retirar_saldo;
+						switch(opc_retirar_saldo)
+						{
+
+						case 1:
+							cout<<"Cuanto dinero desea retirar?"<<endl;
+							cin>>saldo_para_retirar_del_juego;
+
+							validacion_saldo_para_retirar = valida.met_validarRetirarSaldo(saldo_para_retirar_del_juego, saldo_usuario);
+							if(validacion_saldo_para_retirar==true)
+							{
+								saldo_usuario = saldo_usuario-saldo_para_retirar_del_juego;
+								break;
+							} else {
+								cout<<"La transferencia no se pudo realizar..."<<endl;
+								break;
+							}
+
+						}
+
+
 						cout<<"retirar saldo"<<endl;
 						continue;
-						///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+					case 4:
+						cout<<"El saldo actual de tu cuenta es"<<endl;
+						cout<<saldo_usuario<<endl;
+						continue;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 					case 0:
 						j = false;
 						cout<<"sesion cerrada con exito"<<endl;
@@ -590,3 +628,4 @@ int main() {
 	iniciar.juego();
 	return 0;
 }
+

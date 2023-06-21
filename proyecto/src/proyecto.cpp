@@ -113,12 +113,22 @@ public:
 	}
 
 	bool met_validarRetirarSaldo(int val_saldoretirar, int saldo_delUsuario){
-		if(val_saldoretirar>saldo_delUsuario){
+		if(val_saldoretirar<=saldo_delUsuario){
 			return true;
 		} else {
 			return false;
 		}
 	}
+
+	bool met_validarSaldoParajugar(int val_saldoAjugar, int saldo_delUsuario){
+		if(val_saldoAjugar<=saldo_delUsuario){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
 
 
 };
@@ -210,19 +220,6 @@ public:
 	    return val_ingresar;
 	}
 
-	//---------------------------------------------------------------------------------
-};
-
-
-
-class clase_perfilJugador{
-public:
-	//---------------------------------------------------------------------------------
-	//mostramos el saldo por pantalla
-	void met_revisarSaldo(float val_saldo){
-		cout<<"Saldo disponible"<<endl;
-		cout<<val_saldo<<endl;
-	}
 	//---------------------------------------------------------------------------------
 };
 
@@ -433,16 +430,73 @@ public:
 	int atr_nivel = 0;
 	int respuesta_jugador;
 	string vectorjugando[6];
+	////////////////////////////////////METODO PROCESO PREGUNTAS//////////////////////////////////
+	float met_proceso_preguntas(int atr_nivel,int respuesta_correcta, bool validacion_respuestas, float saldo_usuario,float saldo_jugado, bool validacion_saldo_ganado, float saldo_ganado)
+	{
+		clase_preguntas pregunta;
+		clase_login login;
+		clase_validaciones valida;
+		clase_calculos calculos;
+		saldo_ganado = saldo_jugado;
+
+		while(atr_nivel < 11){
+
+			respuesta_correcta = pregunta.met_seleccionar_vector(atr_nivel);
+		    cin>>respuesta_jugador;
+		    validacion_respuestas = valida.met_validarRespuesPregunta(respuesta_jugador, respuesta_correcta);
+		    if(validacion_respuestas == false){
+		    	atr_nivel = 11;
+		    	saldo_usuario = 0 ;
+		    	cout<<"Respuesta incorrecta!!!!!   :("<<endl;
+		    	cout<<"-"<< saldo_jugado << endl;
+		    	saldo_ganado = 0;
+		    }
+		    else{
+		    	cout<<"Respuesta correcta!!!!!     :D"<<endl;
+		    	saldo_ganado = saldo_ganado+calculos.met_calcularPorcentajeporPregunta(saldo_jugado);
+		    }
+
+		    if (atr_nivel == 3){
+		    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
+		    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
+		    	if (validacion_saldo_ganado == true){
+		    	atr_nivel = 11;
+		    	}
+
+
+		    }
+		    if (atr_nivel == 6){
+		    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
+		    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
+		    	if (validacion_saldo_ganado == true){
+		    	atr_nivel = 11;
+		    	}
+
+		    };
+
+		    if(atr_nivel == 9){
+		    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
+		    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
+		    	if (validacion_saldo_ganado == true){
+		    	atr_nivel = 11;
+		    	}
+
+		    }
+		    atr_nivel = atr_nivel + 1;
+		};
+
+		return saldo_ganado;
+	}
+	////////////////////////////////////FIN METODO PROCESO PREGUNTAS//////////////////////////////////
 	void juego(){
 		bool i = true;
 		bool j = true;
 
-		int respuesta_jugador;
 		int respuesta_correcta;
 
-		float saldo_usuario = 10000;
+		float saldo_usuario = 0;
 		float saldo_ganado = 0;
-		float saldo_jugado = 10000;
+		float saldo_jugado = 0;
 		float saldo_nuevo_ingresar = 0;
 		float saldo_para_retirar_del_juego = 0;
 
@@ -450,9 +504,11 @@ public:
 		bool validacion_respuestas = false ;
 		bool validacion_saldo_nuevo_ingresar = false;
 		bool validacion_saldo_para_retirar = false;
+		bool validacion_saldo_jugar_partida = false;
+		bool validacion_verificar_saldo_jugado = false;
 
+		clase_juego metodos_juego;
 		clase_preguntas pregunta;
-		clase_perfilJugador jugador;
 		clase_login login;
 		clase_menus menus;
 		clase_validaciones valida;
@@ -477,64 +533,28 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					case 1:
 						atr_nivel = 1;
+						cout<<"Cuando dinero deseas jugar?"<<endl;
+						cin>>saldo_jugado;
+						validacion_verificar_saldo_jugado = valida.met_validarSaldoParajugar(saldo_jugado, saldo_usuario);
+						if(validacion_verificar_saldo_jugado == true)
+						{
+							saldo_usuario = saldo_usuario-saldo_jugado;
+							validacion_saldo_jugar_partida = valida.met_validarSaldoParapartida(saldo_jugado);
 
-						while(atr_nivel < 11){
-
-							respuesta_correcta = pregunta.met_seleccionar_vector(atr_nivel);
-						    cin>>respuesta_jugador;
-						    validacion_respuestas = valida.met_validarRespuesPregunta(respuesta_jugador, respuesta_correcta);
-						    if(validacion_respuestas == false){
-						    	atr_nivel = 11;
-						    	saldo_usuario = 0 ;
-						    	cout<<"Respuesta incorrecta!!!!!   :("<<endl;
-						    	cout<<"-"<< saldo_jugado << endl;
-						    	saldo_jugado = 0;
-						    }
-						    else{
-						    	cout<<"Respuesta correcta!!!!!     :D"<<endl;
-						    }
-
-						    if (atr_nivel == 3){
-						    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
-						    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
-						    	if (validacion_saldo_ganado == true){
-						    	atr_nivel = 11;
-						    	}
-
-
-						    }
-						    if (atr_nivel == 6){
-						    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
-						    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
-						    	if (validacion_saldo_ganado == true){
-						    	atr_nivel = 11;
-						    	}
-
-						    };
-
-						    if(atr_nivel == 9){
-						    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
-						    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
-						    	if (validacion_saldo_ganado == true){
-						    	atr_nivel = 11;
-						    	}
-
-						    }
-						    atr_nivel = atr_nivel + 1;
-						};
-
-
-
-
-
-
-						cout<<"jugando..."<<endl;
-
+							if(validacion_saldo_jugar_partida==true)
+							{
+								saldo_usuario = saldo_usuario+metodos_juego.met_proceso_preguntas(atr_nivel, respuesta_correcta, validacion_respuestas, saldo_usuario, saldo_jugado, validacion_saldo_ganado, saldo_ganado);
+							} else {
+								cout<<"EROR : 404|SALDO INCORRECTO"<<endl;
+							}
+						} else {
+							cout<<"EROR : 404|SALDO INCORRECTO"<<endl;
+						}
 						break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////INGRESAR SALDO///////////////////////////////////////////////////////////////////////////
 					case 2:
-						cout<<"Desea ingresar saldo de su cuenta?"<<endl;
+						cout<<"Desea ingresar saldo a su cuenta?"<<endl;
 						cout<<"Si-1 No-Cualquier otro numero"<<endl;
 						cin>>opc_ingresar_saldo;
 						switch(opc_ingresar_saldo)
@@ -562,7 +582,7 @@ public:
 ////////////////////////////////////FIN INGRESAR SALDO///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					case 3:
-						cout<<"Desea tirar saldo de su cuenta?"<<endl;
+						cout<<"Desea retirar saldo de su cuenta?"<<endl;
 						cout<<"Si-1 No-Cualquier otro numero"<<endl;
 						cin>>opc_retirar_saldo;
 						switch(opc_retirar_saldo)

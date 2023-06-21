@@ -167,18 +167,13 @@ public:
 //en la clase login, se ingresa aL juego y se registran nuevos usarios
 class clase_login{
 public:
-	//atributo que guarda temporalmente el usuario
-	vector<string> atr_usuarios;
-	//atributo que guarda temporalmente la contraseña
-	vector<string> atr_contrasenas;
-	//
 	string atr_user;
 	string atr_pass;
 
 
 	//---------------------------------------------------------------------------------
 	//con este metodo creamos nuevos jugadores en el sisteam, asignando un usuario y una contraseña
-	void met_crear_jugador()
+	void met_crear_jugador(vector<string> atr_usuarios,vector<string> atr_contrasenas)
 	{
 		cout<<"Ingrese su nombre de usuario"<<endl;
 		cin>>atr_user;
@@ -198,7 +193,7 @@ public:
 
 	//---------------------------------------------------------------------------------
 	//metodo para iniciar la seccion
-	bool met_iniciar_seccion()
+	bool met_iniciar_seccion(vector<string> atr_usuarios,vector<string> atr_contrasenas)
 	{
 	    bool val_ingresar = false;
 	    cout << "Ingrese su nombre de usuario" << endl;
@@ -430,6 +425,11 @@ public:
 	int atr_nivel = 0;
 	int respuesta_jugador;
 	string vectorjugando[6];
+	//atributo que guarda temporalmente el usuario
+	vector<string> atr_usuarios;
+	//atributo que guarda temporalmente la contraseña
+	vector<string> atr_contrasenas;
+
 	////////////////////////////////////METODO PROCESO PREGUNTAS//////////////////////////////////
 	float met_proceso_preguntas(int atr_nivel,int respuesta_correcta, bool validacion_respuestas, float saldo_usuario,float saldo_jugado, bool validacion_saldo_ganado, float saldo_ganado)
 	{
@@ -446,7 +446,6 @@ public:
 		    validacion_respuestas = valida.met_validarRespuesPregunta(respuesta_jugador, respuesta_correcta);
 		    if(validacion_respuestas == false){
 		    	atr_nivel = 11;
-		    	saldo_usuario = 0 ;
 		    	cout<<"Respuesta incorrecta!!!!!   :("<<endl;
 		    	cout<<"-"<< saldo_jugado << endl;
 		    	saldo_ganado = 0;
@@ -460,6 +459,7 @@ public:
 		    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
 		    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
 		    	if (validacion_saldo_ganado == true){
+		    	saldo_ganado = saldo_ganado+calculos.met_calcularPorcentajeRetirarse(saldo_ganado, atr_nivel);
 		    	atr_nivel = 11;
 		    	}
 
@@ -468,6 +468,7 @@ public:
 		    if (atr_nivel == 6){
 		    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
 		    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
+		    	saldo_ganado = saldo_ganado+calculos.met_calcularPorcentajeRetirarse(saldo_ganado, atr_nivel);
 		    	if (validacion_saldo_ganado == true){
 		    	atr_nivel = 11;
 		    	}
@@ -477,6 +478,7 @@ public:
 		    if(atr_nivel == 9){
 		    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
 		    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
+		    	saldo_ganado = saldo_ganado+calculos.met_calcularPorcentajeRetirarse(saldo_ganado, atr_nivel);
 		    	if (validacion_saldo_ganado == true){
 		    	atr_nivel = 11;
 		    	}
@@ -525,7 +527,11 @@ public:
 			switch(opc_principal){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			case 1:
-				j = true;
+
+				j = login.met_iniciar_seccion(atr_usuarios, atr_contrasenas);
+				if(j == false){
+					cout<<"Usuario no registrado"<<endl;
+				}
 				while(j == true){
 					menus.met_menuInicial();
 					cin>>opc_inicial;
@@ -538,11 +544,11 @@ public:
 						validacion_verificar_saldo_jugado = valida.met_validarSaldoParajugar(saldo_jugado, saldo_usuario);
 						if(validacion_verificar_saldo_jugado == true)
 						{
-							saldo_usuario = saldo_usuario-saldo_jugado;
 							validacion_saldo_jugar_partida = valida.met_validarSaldoParapartida(saldo_jugado);
 
 							if(validacion_saldo_jugar_partida==true)
 							{
+								saldo_usuario = saldo_usuario-saldo_jugado;
 								saldo_usuario = saldo_usuario+metodos_juego.met_proceso_preguntas(atr_nivel, respuesta_correcta, validacion_respuestas, saldo_usuario, saldo_jugado, validacion_saldo_ganado, saldo_ganado);
 							} else {
 								cout<<"EROR : 404|SALDO INCORRECTO"<<endl;
@@ -618,7 +624,10 @@ public:
 						j = false;
 						cout<<"sesion cerrada con exito"<<endl;
 						continue;
-						///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+					default:
+						cout<<"Dato ingresado incorrecto"<<endl;
+						break;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					}
 ///////////////////CIERA EL SWITCH SECUNDARIO////////////////////////////////////////////////////////////////////////////////////////////
 				};
@@ -626,6 +635,7 @@ public:
 				break;
 ////////////////////////BREAK CASO 1///////////////////////////////////////////////////////////////////////////////////////
 			case 2:
+				login.met_crear_jugador(atr_usuarios, atr_contrasenas);
 				cout<<"usuario registrado con exito"<<endl;
 				continue;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -167,18 +167,15 @@ public:
 //en la clase login, se ingresa aL juego y se registran nuevos usarios
 class clase_login{
 public:
-	string atr_user;
-	string atr_pass;
+	vector<string> atr_usuarios;
+	//atributo que guarda temporalmente la contraseña
+	vector<string> atr_contrasenas;
 
 
 	//---------------------------------------------------------------------------------
 	//con este metodo creamos nuevos jugadores en el sisteam, asignando un usuario y una contraseña
-	void met_crear_jugador(vector<string> atr_usuarios,vector<string> atr_contrasenas)
+	void met_crear_jugador(string atr_user, string atr_pass)
 	{
-		cout<<"Ingrese su nombre de usuario"<<endl;
-		cin>>atr_user;
-		cout<<"Ingrese contraseña"<<endl;
-		cin>>atr_pass;
 		//Validacion
 		atr_usuarios.push_back(atr_user);
 		atr_contrasenas.push_back(atr_pass);
@@ -193,13 +190,9 @@ public:
 
 	//---------------------------------------------------------------------------------
 	//metodo para iniciar la seccion
-	bool met_iniciar_seccion(vector<string> atr_usuarios,vector<string> atr_contrasenas)
+	bool met_iniciar_seccion(string atr_user, string atr_pass)
 	{
 	    bool val_ingresar = false;
-	    cout << "Ingrese su nombre de usuario" << endl;
-	    cin >> atr_user;
-	    cout << "Ingrese contraseña" << endl;
-	    cin >> atr_pass;
 	    int tamano = atr_usuarios.size();
 
 
@@ -425,10 +418,9 @@ public:
 	int atr_nivel = 0;
 	int respuesta_jugador;
 	string vectorjugando[6];
+	string atr_user;
+	string atr_pass;
 	//atributo que guarda temporalmente el usuario
-	vector<string> atr_usuarios;
-	//atributo que guarda temporalmente la contraseña
-	vector<string> atr_contrasenas;
 
 	////////////////////////////////////METODO PROCESO PREGUNTAS//////////////////////////////////
 	float met_proceso_preguntas(int atr_nivel,int respuesta_correcta, bool validacion_respuestas, float saldo_usuario,float saldo_jugado, bool validacion_saldo_ganado, float saldo_ganado)
@@ -527,8 +519,11 @@ public:
 			switch(opc_principal){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			case 1:
-
-				j = login.met_iniciar_seccion(atr_usuarios, atr_contrasenas);
+				cout << "Ingrese su nombre de usuario" << endl;
+				cin >> atr_user;
+				cout << "Ingrese contraseña" << endl;
+				cin >> atr_pass;
+				j = login.met_iniciar_seccion(atr_user, atr_pass);
 				if(j == false){
 					cout<<"Usuario no registrado"<<endl;
 				}
@@ -635,7 +630,11 @@ public:
 				break;
 ////////////////////////BREAK CASO 1///////////////////////////////////////////////////////////////////////////////////////
 			case 2:
-				login.met_crear_jugador(atr_usuarios, atr_contrasenas);
+				cout<<"Ingrese su nombre de usuario"<<endl;
+				cin>>atr_user;
+				cout<<"Ingrese contraseña"<<endl;
+				cin>>atr_pass;
+				login.met_crear_jugador(atr_user, atr_pass);
 				cout<<"usuario registrado con exito"<<endl;
 				continue;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

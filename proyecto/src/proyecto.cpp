@@ -462,7 +462,7 @@ public:
 		    }
 		    else{
 		    	cout<<"Respuesta correcta!!!!!     :D"<<endl;
-		    	saldo_ganado +=  calculos.met_calcularPorcentajeporPregunta(saldo_jugado);
+		    	saldo_ganado += calculos.met_calcularPorcentajeporPregunta(saldo_jugado);
 		    }
 
 		    if (atr_nivel == 3){
@@ -513,6 +513,7 @@ public:
 		float saldo_jugado = 0;
 		float saldo_nuevo_ingresar = 0;
 		float saldo_para_retirar_del_juego = 0;
+		float saldo_mostrar_saldo_ganado = 0;
 
 		bool validacion_saldo_ganado = false;
 		bool validacion_respuestas = false ;
@@ -556,13 +557,18 @@ public:
 					cout<<"Usuario no registrado"<<endl;
 				}
 				while(j == true){
-
 					menus.met_menuInicial();
 					cin>>opc_inicial;
 					switch(opc_inicial){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					case 1:
 						atr_nivel = 1;
+						cout<<"-------------------INSTRUCCIONES----------------------------------------------------------------"<<endl;
+						cout<<"Una respuesta incorrecta sera el fin del juego"<<endl;
+						cout<<"en los niveles 3,6 y 9, son comodines, usalos bien"<<endl;
+						cout<<"cualquier dato ingresado de forma erronea, finaliza la partidad"<<endl;
+						cout<<"Buena suerte y disfruta el juego!!"<<endl;
+						cout<<"-------------------------------------------------------------------------------------------------------"<<endl;
 						cout<<"Cuando dinero deseas jugar?"<<endl;
 						cin>>saldo_jugado;
 						validacion_verificar_saldo_jugado = valida.met_validarSaldoParajugar(saldo_jugado, saldo_usuario);
@@ -574,6 +580,11 @@ public:
 							{
 								saldo_usuario = saldo_usuario - saldo_jugado;
 								saldo_usuario = saldo_usuario + metodos_juego.met_proceso_preguntas(atr_nivel, validacion_respuestas, saldo_jugado, validacion_saldo_ganado, saldo_ganado);
+
+								saldo_mostrar_saldo_ganado = saldo_usuario-saldo_jugado;
+
+								cout<<"Tu saldo ganado fue "<<saldo_mostrar_saldo_ganado<<endl;
+
 							} else {
 								cout<<"SALDO INCORRECTO"<<endl;
 

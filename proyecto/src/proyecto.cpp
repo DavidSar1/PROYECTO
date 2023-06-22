@@ -9,7 +9,7 @@ class clase_calculos{
 public:
 	float met_calcularPorcentajeporPregunta(float saldo){
 		//aqui se calcula el saldo obtenido por cada respuesta y se envia a una variable
-		float saldo2 = (saldo*10)/100;
+		float saldo2 = (saldo * 0.1);
 		return saldo2;
 	}
 
@@ -17,13 +17,13 @@ public:
 		//aqui se calcula el saldo obtenido por retirarse del juego y se envia a una variable
 		float saldo2 = 0.0;
 		if (nivel==3){
-			saldo2 = (saldo*25)/100;
+			saldo2 = (saldo*0.25);
 		}
 		if (nivel==6){
-			saldo2 = (saldo*50)/100;
+			saldo2 = (saldo*0.50);
 		}
 		if(nivel==9){
-			saldo2 = (saldo*75)/100;
+			saldo2 = (saldo*0.75);
 		}
 		return saldo2;
 
@@ -172,12 +172,12 @@ public:
 	//
 	vector<string> atr_contrasenas; // 0 1 2 3 4
 
-
 	//---------------------------------------------------------------------------------
 	//con este metodo creamos nuevos jugadores en el sisteam, asignando un usuario y una contraseña
 	void met_crear_jugador(string atr_user, string atr_pass)
 	{
 		//Validacion
+
 		atr_usuarios.push_back(atr_user); // 0 - daniel 1 daniel
 		atr_contrasenas.push_back(atr_pass); // 0 - 123 1 456
 
@@ -283,10 +283,9 @@ public:
 
 
 
-	float met_retirarseDelJuego(int nivel, float saldo)
+	int met_retirarseDelJuego(int nivel)
 	{
-		clase_calculos obj_cal;
-		int val_saldoFinal = 0;
+		int opc_final = 0;
 		int opc = 0;
 		cout<<"Deseas retirarte del juego en el nivel "<<nivel<<" de tu partida actual?"<<endl;
 		cout<<"Si-1  No-Cualquier numero"<<endl;
@@ -295,15 +294,15 @@ public:
 		switch(opc)
 		{
 		case 1:
-			val_saldoFinal = obj_cal.met_calcularPorcentajeRetirarse(saldo, nivel);
+			opc_final = 1;
 			break;
 
 		default:
-			val_saldoFinal = 0;
+			opc_final = 0;
 			break;
 
 		}
-		return val_saldoFinal;
+		return opc_final;
 
 	}
 
@@ -439,13 +438,15 @@ public:
 
 
 	////////////////////////////////////METODO PROCESO PREGUNTAS//////////////////////////////////
-	float met_proceso_preguntas(int atr_nivel, bool validacion_respuestas, float saldo_usuario,float saldo_jugado, bool validacion_saldo_ganado, float saldo_ganado)
+	float met_proceso_preguntas(int atr_nivel, bool validacion_respuestas,float saldo_jugado, bool validacion_saldo_ganado, float saldo_ganado)
 	{
+		int opc_retirarse = 0;
+
 		clase_preguntas pregunta;
 		clase_login login;
 		clase_validaciones valida;
 		clase_calculos calculos;
-		saldo_ganado = saldo_jugado;
+
 		int respuesta_correcta = 0;
 
 		while(atr_nivel < 11){
@@ -461,38 +462,37 @@ public:
 		    }
 		    else{
 		    	cout<<"Respuesta correcta!!!!!     :D"<<endl;
-		    	saldo_ganado = saldo_ganado+calculos.met_calcularPorcentajeporPregunta(saldo_jugado);
+		    	saldo_ganado +=  calculos.met_calcularPorcentajeporPregunta(saldo_jugado);
 		    }
 
 		    if (atr_nivel == 3){
-		    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
-		    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
-		    	if (validacion_saldo_ganado == true){
-		    	saldo_ganado = saldo_ganado+calculos.met_calcularPorcentajeRetirarse(saldo_ganado, atr_nivel);
-		    	atr_nivel = 20;
+		    	opc_retirarse = pregunta.met_retirarseDelJuego(atr_nivel);
+
+		    	if (opc_retirarse == 1){
+		    		saldo_ganado = saldo_jugado +calculos.met_calcularPorcentajeRetirarse(saldo_ganado, atr_nivel);
+		    		atr_nivel = 20;
 		    	}
 
 
 		    }
 		    if (atr_nivel == 6){
-		    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
-		    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
-		    	saldo_ganado = saldo_ganado+calculos.met_calcularPorcentajeRetirarse(saldo_ganado, atr_nivel);
-		    	if (validacion_saldo_ganado == true){
-		    	atr_nivel = 20;
-		    	}
+		    	opc_retirarse = pregunta.met_retirarseDelJuego(atr_nivel);
+		    	if (opc_retirarse == 1){
+		    		saldo_ganado = saldo_jugado +calculos.met_calcularPorcentajeRetirarse(saldo_ganado, atr_nivel);
+		    		atr_nivel = 20;
+		    			    	}
 
 		    };
 
 		    if(atr_nivel == 9){
-		    	saldo_ganado = pregunta.met_retirarseDelJuego(atr_nivel, saldo_usuario);
-		    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
-		    	saldo_ganado = saldo_ganado+calculos.met_calcularPorcentajeRetirarse(saldo_ganado, atr_nivel);
-		    	if (validacion_saldo_ganado == true){
-		    	atr_nivel = 20;
-		    	}
+		    	opc_retirarse = pregunta.met_retirarseDelJuego(atr_nivel);
+		    	if (opc_retirarse == 1){
+		    		saldo_ganado = saldo_jugado +calculos.met_calcularPorcentajeRetirarse(saldo_ganado, atr_nivel);
+		    		atr_nivel = 20;
+		    			    	}
 
 		    }
+
 		    atr_nivel = atr_nivel + 1;
 		};
 
@@ -500,6 +500,7 @@ public:
 	}
 	////////////////////////////////////FIN METODO PROCESO PREGUNTAS//////////////////////////////////
 	void juego(){
+
 		bool i = true;
 		bool j = true;
 
@@ -531,6 +532,9 @@ public:
 		int opc_principal = 0;
 		int opc_inicial = 0;
 		int opc_ingresar_saldo = 0;
+
+		login.met_crear_jugador("admin","admin");
+		atr_saldo_usuario.push_back(0);
 
 		while(i == true){
 			menus.met_menuIngreso();
@@ -568,8 +572,8 @@ public:
 
 							if(validacion_saldo_jugar_partida==true)
 							{
-								saldo_usuario = saldo_usuario-saldo_jugado;
-								saldo_usuario = saldo_usuario + metodos_juego.met_proceso_preguntas(atr_nivel, validacion_respuestas, saldo_usuario, saldo_jugado, validacion_saldo_ganado, saldo_ganado);
+								saldo_usuario = saldo_usuario - saldo_jugado;
+								saldo_usuario = saldo_usuario + metodos_juego.met_proceso_preguntas(atr_nivel, validacion_respuestas, saldo_jugado, validacion_saldo_ganado, saldo_ganado);
 							} else {
 								cout<<"SALDO INCORRECTO"<<endl;
 
@@ -685,5 +689,3 @@ int main() {
 	iniciar.juego();
 	return 0;
 }
-
-

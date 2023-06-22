@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+
 using namespace std;
 class clase_calculos{
 public:
@@ -167,9 +168,9 @@ public:
 //en la clase login, se ingresa aL juego y se registran nuevos usarios
 class clase_login{
 public:
-	vector<string> atr_usuarios;
-	//atributo que guarda temporalmente la contraseña
-	vector<string> atr_contrasenas;
+	vector<string> atr_usuarios; // 0 1 2 3 4
+	//
+	vector<string> atr_contrasenas; // 0 1 2 3 4
 
 
 	//---------------------------------------------------------------------------------
@@ -177,17 +178,13 @@ public:
 	void met_crear_jugador(string atr_user, string atr_pass)
 	{
 		//Validacion
-		atr_usuarios.push_back(atr_user);
-		atr_contrasenas.push_back(atr_pass);
+		atr_usuarios.push_back(atr_user); // 0 - daniel 1 daniel
+		atr_contrasenas.push_back(atr_pass); // 0 - 123 1 456
 
 
 		//Validacion
 	};
 	//---------------------------------------------------------------------------------
-
-
-
-
 	//---------------------------------------------------------------------------------
 	//metodo para iniciar la seccion
 	bool met_iniciar_seccion(string atr_user, string atr_pass)
@@ -197,7 +194,7 @@ public:
 
 
 	    for (int i = 0; i < tamano; i++)
-	    {
+	    { //                 0     daniel                      0      123
 	        if (atr_usuarios[i] == atr_user && atr_contrasenas[i] == atr_pass)
 	        {
 	            val_ingresar = true;
@@ -207,8 +204,24 @@ public:
 
 	    return val_ingresar;
 	}
-
 	//---------------------------------------------------------------------------------
+
+	int met_posicion_usuario(string atr_user)
+	{
+		int posicion_usuario = 0;
+	    int tamano = atr_usuarios.size();
+	    for (int i = 0; i < tamano; i++)
+	    { //
+	        if (atr_usuarios[i] == atr_user)
+	        {
+	        	posicion_usuario = i;
+	            break;
+	        }
+	    }
+	    return posicion_usuario;
+	}
+
+
 };
 
 
@@ -420,16 +433,20 @@ public:
 	string vectorjugando[6];
 	string atr_user;
 	string atr_pass;
+	vector <float> atr_saldo_usuario;
 	//atributo que guarda temporalmente el usuario
 
+
+
 	////////////////////////////////////METODO PROCESO PREGUNTAS//////////////////////////////////
-	float met_proceso_preguntas(int atr_nivel,int respuesta_correcta, bool validacion_respuestas, float saldo_usuario,float saldo_jugado, bool validacion_saldo_ganado, float saldo_ganado)
+	float met_proceso_preguntas(int atr_nivel, bool validacion_respuestas, float saldo_usuario,float saldo_jugado, bool validacion_saldo_ganado, float saldo_ganado)
 	{
 		clase_preguntas pregunta;
 		clase_login login;
 		clase_validaciones valida;
 		clase_calculos calculos;
 		saldo_ganado = saldo_jugado;
+		int respuesta_correcta = 0;
 
 		while(atr_nivel < 11){
 
@@ -437,7 +454,7 @@ public:
 		    cin>>respuesta_jugador;
 		    validacion_respuestas = valida.met_validarRespuesPregunta(respuesta_jugador, respuesta_correcta);
 		    if(validacion_respuestas == false){
-		    	atr_nivel = 11;
+		    	atr_nivel = 20;
 		    	cout<<"Respuesta incorrecta!!!!!   :("<<endl;
 		    	cout<<"-"<< saldo_jugado << endl;
 		    	saldo_ganado = 0;
@@ -452,7 +469,7 @@ public:
 		    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
 		    	if (validacion_saldo_ganado == true){
 		    	saldo_ganado = saldo_ganado+calculos.met_calcularPorcentajeRetirarse(saldo_ganado, atr_nivel);
-		    	atr_nivel = 11;
+		    	atr_nivel = 20;
 		    	}
 
 
@@ -462,7 +479,7 @@ public:
 		    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
 		    	saldo_ganado = saldo_ganado+calculos.met_calcularPorcentajeRetirarse(saldo_ganado, atr_nivel);
 		    	if (validacion_saldo_ganado == true){
-		    	atr_nivel = 11;
+		    	atr_nivel = 20;
 		    	}
 
 		    };
@@ -472,7 +489,7 @@ public:
 		    	validacion_saldo_ganado = valida.met_validarSaldoIngresado(saldo_ganado);
 		    	saldo_ganado = saldo_ganado+calculos.met_calcularPorcentajeRetirarse(saldo_ganado, atr_nivel);
 		    	if (validacion_saldo_ganado == true){
-		    	atr_nivel = 11;
+		    	atr_nivel = 20;
 		    	}
 
 		    }
@@ -486,7 +503,9 @@ public:
 		bool i = true;
 		bool j = true;
 
-		int respuesta_correcta;
+
+		int val_posicion_usuario=0;
+
 
 		float saldo_usuario = 0;
 		float saldo_ganado = 0;
@@ -500,6 +519,7 @@ public:
 		bool validacion_saldo_para_retirar = false;
 		bool validacion_saldo_jugar_partida = false;
 		bool validacion_verificar_saldo_jugado = false;
+
 
 		clase_juego metodos_juego;
 		clase_preguntas pregunta;
@@ -523,11 +543,16 @@ public:
 				cin >> atr_user;
 				cout << "Ingrese contraseña" << endl;
 				cin >> atr_pass;
+
+
 				j = login.met_iniciar_seccion(atr_user, atr_pass);
+				val_posicion_usuario = login.met_posicion_usuario(atr_user);
+				saldo_usuario = atr_saldo_usuario[val_posicion_usuario];
 				if(j == false){
 					cout<<"Usuario no registrado"<<endl;
 				}
 				while(j == true){
+
 					menus.met_menuInicial();
 					cin>>opc_inicial;
 					switch(opc_inicial){
@@ -544,12 +569,13 @@ public:
 							if(validacion_saldo_jugar_partida==true)
 							{
 								saldo_usuario = saldo_usuario-saldo_jugado;
-								saldo_usuario = saldo_usuario+metodos_juego.met_proceso_preguntas(atr_nivel, respuesta_correcta, validacion_respuestas, saldo_usuario, saldo_jugado, validacion_saldo_ganado, saldo_ganado);
+								saldo_usuario = saldo_usuario + metodos_juego.met_proceso_preguntas(atr_nivel, validacion_respuestas, saldo_usuario, saldo_jugado, validacion_saldo_ganado, saldo_ganado);
 							} else {
-								cout<<"EROR : 404|SALDO INCORRECTO"<<endl;
+								cout<<"SALDO INCORRECTO"<<endl;
+
 							}
 						} else {
-							cout<<"EROR : 404|SALDO INCORRECTO"<<endl;
+							cout<<"SALDO INCORRECTO"<<endl;
 						}
 						break;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -616,6 +642,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 					case 0:
+						atr_saldo_usuario[val_posicion_usuario] = saldo_usuario;
 						j = false;
 						cout<<"sesion cerrada con exito"<<endl;
 						continue;
@@ -635,6 +662,7 @@ public:
 				cout<<"Ingrese contraseña"<<endl;
 				cin>>atr_pass;
 				login.met_crear_jugador(atr_user, atr_pass);
+				atr_saldo_usuario.push_back(0);
 				cout<<"usuario registrado con exito"<<endl;
 				continue;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -657,4 +685,5 @@ int main() {
 	iniciar.juego();
 	return 0;
 }
+
 

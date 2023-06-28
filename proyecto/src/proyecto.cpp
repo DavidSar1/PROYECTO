@@ -95,6 +95,8 @@ public:
 	//
 	//---------------------------------------------------------------------------------
 	//---------------------------------------------------------------------------------
+	//con este metodo nos ayudamos a validar que el usuario en ningun momento ponga un numero negativo
+	//al momento de ingresar algo respecto a dinero
 	bool met_validarSaldoIngresado(int val_saldoIngresado)
 	{
 		if(val_saldoIngresado>0){
@@ -112,7 +114,8 @@ public:
 			return false;
 		}
 	}
-
+	//Aqui con dos variables de tipo int, logramos captura que el dinero retirado
+	//nunca sea mayor al dinero que el usuario tenga en su cuenta
 	bool met_validarRetirarSaldo(int val_saldoretirar, int saldo_delUsuario){
 		if(val_saldoretirar<=saldo_delUsuario){
 			return true;
@@ -120,7 +123,8 @@ public:
 			return false;
 		}
 	}
-
+	//Dado que cada partida requiere un saldo minimo de 10000 por partida, nos ayudamos
+	//de este metodo para validar dicho valor
 	bool met_validarSaldoParajugar(int val_saldoAjugar, int saldo_delUsuario){
 		if(val_saldoAjugar<=saldo_delUsuario){
 			return true;
@@ -128,7 +132,7 @@ public:
 			return false;
 		}
 	}
-
+	
 
 	bool met_valida_numero(const string& opcion_usuario) {
 	    try {
@@ -138,7 +142,7 @@ public:
 	        return false;// La conversión falló, no es un número
 	    }
 	}
-
+	
 	int met_valida_opcion(string opcion){
 		int opcion_numero = 0;
 		if(met_valida_numero(opcion)== true){
@@ -212,10 +216,14 @@ public:
 	bool met_iniciar_seccion(string atr_user, string atr_pass)
 	{
 	    bool val_ingresar = false;
+		//con ayuda de este variable y el comando .size de la libreria vector
+	    	//nos ayudamos a descubir el tamano del vector
 	    int tamano = atr_usuarios.size();
 
 
 	    for (int i = 0; i < tamano; i++)
+		//con ayuda de la variable i, buscamos en la misma posicion de los 2 vectores
+	    	//para que corresponda a los datos ingresados y se retorne un valor true
 	    { //                 0     daniel                      0      123
 	        if (atr_usuarios[i] == atr_user && atr_contrasenas[i] == atr_pass)
 	        {
@@ -227,7 +235,9 @@ public:
 	    return val_ingresar;
 	}
 	//---------------------------------------------------------------------------------
-
+	//---------------------------------------------------------------------------------
+	// Tomando las mismas dirrectrices del metodo de arriba, sacamos el valor de i y
+	//descubrimos la posicion del usuario para ayudarnos a administrar su perfil.
 	int met_posicion_usuario(string atr_user)
 	{
 		int posicion_usuario = 0;
@@ -251,6 +261,8 @@ public:
 
 class clase_preguntas{
 public:
+	//Aqui, cada matriz dispone de una serie de preguntas para cada nivel con sus respectas opciones
+	//y su respectiva respuesta, de esta forma controlamos las preguntas recibidas por el usuario
 	string matriz_Nivel1[4][6] = {{"¿Cuál es el planeta más cercano al Sol?","1. Venus","2. Marte","3. Mercurio","4. Júpiter","3"},
 			                      {"¿Quién pintó la Mona Lisa?","1. Leonardo da Vinci","2. Pablo Picasso","3. Vincent van Gogh","4. Salvador Dalí","1"},
 								  {"¿Cuál es la capital de Colombia?","1. Bogotá","2. Medellín","3. Cali","4. Cartagena","1"},
@@ -339,20 +351,29 @@ public:
 	string met_seleccionar_vector(int nivel_juego){
 		srand(time(0)); // Inicializar la semilla de generación de números aleatorios
 		int columna_aleatoria = rand() % 4 + 1; // Generar un número aleatorio del 1 al 4
+		//creamos variables la pregunta y opcion
 		string var_pregunta;
 		string var_opcion1;
 		string var_opcion2;
 		string var_opcion3;
 		string var_opcion4;
 		string var_respuesta;
+		//Con ayuda de switch y una variable entera, se asigna a cada variable antes creada
+		//su valor correspondiente de la pregunta dada, que sera en este caso
+		//designada por la variable aleatoria
 
 		switch(nivel_juego){
 		case 1:
+			//actualizamos para variable de tipo string, con datos de la pregunta de la matris
+			//correspondiente y asi logramos conseguir que no se repita siempre la misma pregunta
+			//en cada nivel
 			var_pregunta =matriz_Nivel1[columna_aleatoria][0];
 			var_opcion1=matriz_Nivel1[columna_aleatoria][1];
 			var_opcion2=matriz_Nivel1[columna_aleatoria][2];
 			var_opcion3=matriz_Nivel1[columna_aleatoria][3];
 			var_opcion4=matriz_Nivel1[columna_aleatoria][4];
+			//con esta variable guardamos la respuesta que siempre se encuentra en el ultimo valor del
+			//vector de cada pregunta
 			var_respuesta=matriz_Nivel1[columna_aleatoria][5];
 			break;
 
@@ -437,14 +458,17 @@ public:
 			cout<<"error de nivel"<<endl;
 			break;
 		};
-
+		//Aqui creamos un nuevo vector y le asignamos un espacio de 5, que son los elementos
+		//base de cada pregunta en las matrices
+		//asignado de forma ordenada cada opcion
 		string vector_nivel[5];
 		vector_nivel[0]= var_pregunta;
 		vector_nivel[1]=var_opcion1;
 		vector_nivel[2]=var_opcion2;
 		vector_nivel[3]=var_opcion3;
 		vector_nivel[4]= var_opcion4;
-
+		//Imprimimos el vector por pantalla, es decir la pregunta que vera el usuario
+		//siempre ignorando la posicion 5 que es el valor de la respuesta y se usa despues
 		for (int i = 0; i < 5; i++) {
 		        cout << vector_nivel[i] << std::endl;
 		    }
@@ -453,9 +477,12 @@ public:
         return var_respuesta;
 	};
 };
+//Con esta clase iniciamos el juego y instaciamos tods los metodos y clases necesarias para
+//su debido funcionamiento
 
 class clase_juego{
 public:
+	//El atr de nivel indispensable y sera el cual controle el nivel en que se encuentre el jugador
 	int atr_nivel = 0;
 	string respuesta_jugador;
 	string vectorjugando[6];
@@ -483,22 +510,35 @@ public:
 			respuesta_correcta = pregunta.met_seleccionar_vector(atr_nivel);
 		    cin>>respuesta_jugador;
 		    validacion_respuestas = valida.met_validarRespuesPregunta(respuesta_jugador, respuesta_correcta);
+			////////VALIDAR RESPUESTA////////////////
 		    if(validacion_respuestas == false){
+			//Si la respuesta es incorrecta el valor del nivel toma uno mayor al cierra el ciclo
+		    	//y le da un valor de 0 al saldo ganado!!
 		    	atr_nivel = 20;
 		    	cout<<"Respuesta incorrecta!!!!!   :("<<endl;
 		    	cout<<"-"<< saldo_jugado << endl;
 		    	saldo_ganado = 0;
 		    }
 		    else{
+			//Respuesta correcta envia un mensaje con dicho mensaje y le suma a saldo ganado un porcentaje
+		    	//de 10% de su valor jugado al saldo que va a ganar, este ciclo se repite en cada respuesta
+		    	//correcta!!
 		    	cout<<"Respuesta correcta!!!!!     :D"<<endl;
 		    	saldo_ganado +=  calculos.met_calcularPorcentajeporPregunta(saldo_jugado);
 		    }
+			/////////FIN VALIDAR RESPUESTA//////////////////
+		    /////////INICIO VALIDAR EL NIVEL PARA RETIRARSE DEL JUEGO/////////
 
 		    if (atr_nivel == 3){
+			//Aqui le preguntamos al usuaurio si desea reitirararse del juego
+		    	//el valor dado se evalua abajo
 		    	opc_retirarse = pregunta.met_retirarseDelJuego(atr_nivel);
 
 		    	if (opc_retirarse == 1){
+				//si la opcion es si, al saldo ganado se le suma el saldo jugado + 25%
+		    		//del saldo ganado hasta ese momento
 		    		saldo_ganado = saldo_jugado +calculos.met_calcularPorcentajeRetirarse(saldo_ganado, atr_nivel);
+				//Con esta variable rompemos el ciclo!!
 		    		atr_nivel = 20;
 		    	}
 
@@ -507,7 +547,10 @@ public:
 		    if (atr_nivel == 6){
 		    	opc_retirarse = pregunta.met_retirarseDelJuego(atr_nivel);
 		    	if (opc_retirarse == 1){
+				//si la opcion es si, al saldo ganado se le suma el saldo jugado + el 50%
+		    		//del saldo ganado hasta ese momento
 		    		saldo_ganado = saldo_jugado +calculos.met_calcularPorcentajeRetirarse(saldo_ganado, atr_nivel);
+				//Con esta variable rompemos el ciclo!!
 		    		atr_nivel = 20;
 		    			    	}
 
@@ -516,15 +559,19 @@ public:
 		    if(atr_nivel == 9){
 		    	opc_retirarse = pregunta.met_retirarseDelJuego(atr_nivel);
 		    	if (opc_retirarse == 1){
+				//si la opcion es si, al saldo ganado se le suma el saldo jugado + el 75%
+		    		//del saldo ganado hasta ese momento
 		    		saldo_ganado = saldo_jugado +calculos.met_calcularPorcentajeRetirarse(saldo_ganado, atr_nivel);
+				//Con esta variable rompemos el ciclo!!
 		    		atr_nivel = 20;
 		    			    	}
 
 		    }
-
+			//a la variable atr nivel, se le suma 1 por cada ciclo asi aumentando el nivel
+		    	//y dificiltad de la pregunta al usuairo
 		    atr_nivel = atr_nivel + 1;
 		};
-
+		//retornamos el valor ganado!!
 		return saldo_ganado;
 	}
 	////////////////////////////////////FIN METODO PROCESO PREGUNTAS//////////////////////////////////
@@ -554,22 +601,24 @@ public:
 		bool validacion_verificar_saldo_jugado = false;
 
 
-
+		///Intanciamos las clases usadas en el juego para su debido funcionamiento!!
 		clase_juego metodos_juego;
 		clase_preguntas pregunta;
 		clase_login login;
 		clase_menus menus;
 		clase_validaciones valida;
-
+		
 		int opc_retirar_saldo = 0;
 		int opc_principal = 0;
 		int opc_inicial = 0;
 		int opc_ingresar_saldo = 0;
 
+		//Usuarios para probar el programa!!
 		login.met_crear_jugador("admin","admin");
 		atr_saldo_usuario.push_back(0);
 
 		while(i == true){
+			//iniciamos el programa con el primer menu!!
 			menus.met_menuIngreso();
 			cin>>opcion_valida;
 			opc_principal = valida.met_valida_opcion(opcion_valida);
@@ -582,10 +631,17 @@ public:
 				cout << "Ingrese contraseña" << endl;
 				cin >> atr_pass;
 
-
+				//la variable j que es bool, le damos el valor que retorne iniciar seccion
+				//para luego usarla al ingresar al programa
 				j = login.met_iniciar_seccion(atr_user, atr_pass);
+				//con esta variable buscamos encontrar la posicion del usuario
+				//esto nos ayudara a darle un saldo a dicho usuario y mantenerlo
+				//aunque dedida cerrar seccion!!
+				//diferente usuario diferentes saldo del dicho usuario
 				val_posicion_usuario = login.met_posicion_usuario(atr_user);
+				//Aqui asignamos el valor del saldo_usuario a la posicion del jugador
 				saldo_usuario = atr_saldo_usuario[val_posicion_usuario];
+				//si el valor retorna falso se mostrara el mensaje y se devolvera al menu!
 				if(j == false){
 					cout<<"Usuario no registrado"<<endl;
 				}
@@ -597,6 +653,17 @@ public:
 					switch(opc_inicial){
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					case 1:
+						//Le damos unas pequeñas intrucciones del juego al usuario
+						//mientras el inicia el valor a jugar!!
+						cout<<"-------------------INSTRUCCIONES----------------------------------------------------------------"<<endl;
+						cout<<"El saldo minimo es de 10000 para iniciar el juego!!!!"<<endl;
+						cout<<"Una respuesta incorrecta sera el fin del juego"<<endl;
+						cout<<"en los niveles 3,6 y 9, son comodines para retirarte del juego, usalos bien"<<endl;
+						cout<<"cualquier dato ingresado de forma erronea, finaliza la partidad"<<endl;
+						cout<<"Buena suerte y disfruta el juego!!"<<endl;
+						cout<<"-------------------------------------------------------------------------------------------------------"<<endl;
+						//usando el metodo de validar, validamos aqui que el saldo jugado sea
+						//menor al saldo del usuario
 						atr_nivel = 1;
 						cout<<"Cuando dinero deseas jugar?"<<endl;
 						cin>>opcion_valida;
